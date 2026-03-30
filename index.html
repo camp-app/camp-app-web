@@ -1,13 +1,418 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CAMP – Creator Ad Marketplace Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --border: #1e1e1e;
+      --accent: #e63329;
+      --text: #f0f0f0;
+      --muted: #666;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 24px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(230,51,41,0.12) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -60%);
+      pointer-events: none;
+    }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(96px, 18vw, 180px);
+      letter-spacing: 0.04em;
+      line-height: 1;
+      color: var(--text);
+      position: relative;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .tagline {
+      font-size: clamp(13px, 2vw, 16px);
+      font-weight: 300;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 12px;
+      animation: fadeUp 0.8s 0.15s ease both;
+    }
+
+    .divider {
+      width: 40px;
+      height: 2px;
+      background: var(--accent);
+      margin: 40px auto;
+      animation: fadeUp 0.8s 0.25s ease both;
+    }
+
+    .coming-soon {
+      font-size: 13px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      animation: fadeUp 0.8s 0.35s ease both;
+    }
+
+    /* ── LEGAL SECTION ── */
+    .legal {
+      padding: 0 24px 80px;
+      max-width: 760px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .accordion {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 12px;
+      animation: fadeUp 0.8s 0.4s ease both;
+    }
+
+    .accordion + .accordion {
+      animation-delay: 0.5s;
+    }
+
+    .accordion-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+      background: var(--surface);
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s;
+      border: none;
+      width: 100%;
+      text-align: left;
+      color: var(--text);
+    }
+
+    .accordion-header:hover {
+      background: #161616;
+    }
+
+    .accordion-title {
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .accordion-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      position: relative;
+      transition: transform 0.3s ease;
+    }
+
+    .accordion-icon::before,
+    .accordion-icon::after {
+      content: '';
+      position: absolute;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .accordion-icon::before {
+      width: 2px; height: 12px;
+      top: 4px; left: 9px;
+    }
+
+    .accordion-icon::after {
+      width: 12px; height: 2px;
+      top: 9px; left: 4px;
+    }
+
+    .accordion.open .accordion-icon::before {
+      transform: rotate(90deg);
+      opacity: 0;
+    }
+
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      background: var(--bg);
+    }
+
+    .accordion.open .accordion-body {
+      max-height: 9999px;
+    }
+
+    .accordion-content {
+      padding: 32px 24px 40px;
+      border-top: 1px solid var(--border);
+    }
+
+    .accordion-content h2 {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-top: 28px;
+      margin-bottom: 10px;
+      padding-left: 10px;
+      border-left: 2px solid var(--accent);
+    }
+
+    .accordion-content h2:first-child {
+      margin-top: 0;
+    }
+
+    .accordion-content p {
+      font-size: 14px;
+      line-height: 1.8;
+      color: #999;
+      margin-bottom: 8px;
+    }
+
+    .accordion-content ul {
+      margin: 6px 0 10px 20px;
+    }
+
+    .accordion-content ul li {
+      font-size: 14px;
+      line-height: 1.8;
+      color: #999;
+      margin-bottom: 4px;
+    }
+
+    .accordion-content a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .updated {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="logo">C<span>A</span>MP</div>
+    <p class="tagline">Creator Ad Marketplace Platform</p>
+    <div class="divider"></div>
+    <p class="coming-soon">Coming soon</p>
+  </section>
+
+  <section class="legal">
+
+    <div class="accordion" id="terms">
+      <button class="accordion-header" onclick="toggle(this)">
+        <span class="accordion-title">Terms of Service</span>
+        <span class="accordion-icon"></span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-content">
+          <span class="updated">Last updated: February 21, 2026</span>
+
+          <h2>1. Acceptance of Terms</h2>
+          <p>By accessing or using CAMP ("the Service"), you agree to be bound by these Terms of Service. If you do not agree, please do not use the Service.</p>
+
+          <h2>2. Description of Service</h2>
+          <p>CAMP is a social media management platform that allows users to schedule, publish, and manage content across multiple social media platforms including YouTube, TikTok, Facebook, and Instagram.</p>
+
+          <h2>3. User Accounts</h2>
+          <ul>
+            <li>You must provide accurate information when creating an account.</li>
+            <li>You are responsible for maintaining the security of your account.</li>
+            <li>You must be at least 13 years old to use this Service.</li>
+            <li>One person may not maintain more than one account.</li>
+          </ul>
+
+          <h2>4. Acceptable Use</h2>
+          <p>You agree not to use the Service to:</p>
+          <ul>
+            <li>Post illegal, harmful, or offensive content.</li>
+            <li>Violate any third-party platform's terms of service.</li>
+            <li>Spam or send unsolicited messages.</li>
+            <li>Impersonate others or misrepresent your identity.</li>
+            <li>Attempt to gain unauthorized access to our systems.</li>
+          </ul>
+
+          <h2>5. Social Media Platform Compliance</h2>
+          <p>When using CAMP to post content to third-party platforms (YouTube, TikTok, Facebook, Instagram), you agree to comply with each platform's respective terms of service and community guidelines.</p>
+
+          <h2>6. Intellectual Property</h2>
+          <p>You retain ownership of all content you upload to CAMP. By using the Service, you grant CAMP a limited license to store and process your content solely for the purpose of providing the Service.</p>
+
+          <h2>7. Subscription and Payments</h2>
+          <ul>
+            <li>Some features require a paid subscription.</li>
+            <li>Subscriptions are billed monthly or annually.</li>
+            <li>You may cancel your subscription at any time.</li>
+            <li>Refunds are handled on a case-by-case basis.</li>
+          </ul>
+
+          <h2>8. Termination</h2>
+          <p>We reserve the right to suspend or terminate your account if you violate these Terms. You may also delete your account at any time.</p>
+
+          <h2>9. Disclaimer of Warranties</h2>
+          <p>The Service is provided "as is" without warranties of any kind. We do not guarantee uninterrupted or error-free service.</p>
+
+          <h2>10. Limitation of Liability</h2>
+          <p>CAMP shall not be liable for any indirect, incidental, or consequential damages arising from your use of the Service.</p>
+
+          <h2>11. Changes to Terms</h2>
+          <p>We may update these Terms from time to time. Continued use of the Service after changes constitutes acceptance of the new Terms.</p>
+
+          <h2>12. Contact</h2>
+          <p>For questions about these Terms, contact us at: <a href="mailto:camp.app726@gmail.com">camp.app726@gmail.com</a></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion" id="privacy">
+      <button class="accordion-header" onclick="toggle(this)">
+        <span class="accordion-title">Privacy Policy</span>
+        <span class="accordion-icon"></span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-content">
+          <span class="updated">Last updated: February 21, 2026</span>
+
+          <h2>Introduction</h2>
+          <p>CAMP ("we", "our", or "us") respects your privacy. This Privacy Policy explains how we collect, use, and protect your information when you use our social media management platform.</p>
+
+          <h2>Information We Collect</h2>
+          <ul>
+            <li><strong style="color:#ccc">Account Information:</strong> When you sign up, we collect your email address and name.</li>
+            <li><strong style="color:#ccc">Social Media Data:</strong> We access your Facebook, Instagram, YouTube, and TikTok accounts only with your explicit permission through OAuth.</li>
+            <li><strong style="color:#ccc">Content:</strong> Posts, images, and videos you create or schedule through our platform.</li>
+          </ul>
+
+          <h2>How We Use Your Information</h2>
+          <ul>
+            <li><strong style="color:#ccc">To provide our service:</strong> Schedule and publish content to your connected social media accounts.</li>
+            <li><strong style="color:#ccc">To improve our platform:</strong> Analyze usage patterns to enhance features.</li>
+            <li><strong style="color:#ccc">Communication:</strong> Send you service updates and support messages.</li>
+          </ul>
+
+          <h2>Data Sharing</h2>
+          <ul>
+            <li>We do <strong style="color:#ccc">NOT</strong> sell your personal information.</li>
+            <li>We only share data with social media platforms when you explicitly authorize us to post content on your behalf.</li>
+            <li>We use secure, encrypted connections for all data transfers.</li>
+          </ul>
+
+          <h2>Your Rights</h2>
+          <ul>
+            <li><strong style="color:#ccc">Access:</strong> You can request a copy of your data at any time.</li>
+            <li><strong style="color:#ccc">Deletion:</strong> You can delete your account and all associated data.</li>
+            <li><strong style="color:#ccc">Revoke Access:</strong> You can disconnect social media accounts at any time.</li>
+          </ul>
+
+          <h2>Data Security</h2>
+          <p>We use industry-standard security measures including encryption, secure servers, and regular security audits to protect your information.</p>
+
+          <h2>Third-Party Services</h2>
+          <p>We integrate with Facebook / Meta, Instagram, YouTube / Google, and TikTok. Each platform has its own privacy policy which governs how they handle your data.</p>
+
+          <h2>Children's Privacy</h2>
+          <p>Our service is not intended for users under 13 years of age. We do not knowingly collect information from children.</p>
+
+          <h2>Changes to This Policy</h2>
+          <p>We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new policy on this page.</p>
+
+          <h2>Data Retention</h2>
+          <p>We retain your data for as long as your account is active. After account deletion, we remove all personal data within 30 days.</p>
+
+          <h2>Contact Us</h2>
+          <p>If you have questions about this Privacy Policy, contact us at: <a href="mailto:camp.app726@gmail.com">camp.app726@gmail.com</a></p>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <footer>© 2026 CAMP. All rights reserved.</footer>
+
+  <script>
+    function toggle(btn) {
+      const acc = btn.closest('.accordion');
+      acc.classList.toggle('open');
+    }
+
+    // Auto-open if hash matches
+    window.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash;
+      if (hash === '#terms' || hash === '#privacy') {
+        const el = document.querySelector(hash);
+        if (el) {
+          el.classList.add('open');
+          setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 100);
+        }
+      }
+    });
+  </script>
+
+</body>
 </html>
