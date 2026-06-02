@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>CAMP – Creator Ad Marketplace Platform</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -15,7 +15,8 @@
       --border: #1e1e1e;
       --accent: #e63329;
       --text: #f0f0f0;
-      --muted: #666;
+      --muted: #555;
+      --muted2: #888;
     }
 
     html { scroll-behavior: smooth; }
@@ -24,95 +25,442 @@
       background: var(--bg);
       color: var(--text);
       font-family: 'DM Sans', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      overflow-x: hidden;
     }
 
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+      background: linear-gradient(to bottom, rgba(10,10,10,0.95), transparent);
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 0.1em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted2);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
     /* ── HERO ── */
-    .hero {
-      flex: 1;
+    #hero {
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 80px 24px 60px;
+      padding: 120px 24px 80px;
       position: relative;
       overflow: hidden;
     }
 
-    .hero::before {
-      content: '';
+    .hero-glow {
       position: absolute;
-      width: 600px;
-      height: 600px;
+      width: 700px;
+      height: 700px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(230,51,41,0.12) 0%, transparent 70%);
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -60%);
+      background: radial-gradient(circle, rgba(230,51,41,0.10) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -55%);
       pointer-events: none;
+    }
+
+    .hero-noise {
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      opacity: 0.4;
     }
 
     .logo {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(96px, 18vw, 180px);
+      font-size: clamp(100px, 20vw, 200px);
       letter-spacing: 0.04em;
       line-height: 1;
       color: var(--text);
       position: relative;
-      animation: fadeUp 0.8s ease both;
+      animation: fadeUp 1s ease both;
     }
 
-    .logo span {
-      color: var(--accent);
-    }
+    .logo span { color: var(--accent); }
 
     .tagline {
-      font-size: clamp(13px, 2vw, 16px);
+      font-size: clamp(11px, 1.8vw, 14px);
       font-weight: 300;
-      letter-spacing: 0.25em;
+      letter-spacing: 0.3em;
       text-transform: uppercase;
-      color: var(--muted);
-      margin-top: 12px;
-      animation: fadeUp 0.8s 0.15s ease both;
+      color: var(--muted2);
+      margin-top: 16px;
+      animation: fadeUp 1s 0.15s ease both;
     }
 
-    .divider {
+    .hero-divider {
       width: 40px;
       height: 2px;
       background: var(--accent);
-      margin: 40px auto;
-      animation: fadeUp 0.8s 0.25s ease both;
+      margin: 36px auto;
+      animation: fadeUp 1s 0.25s ease both;
     }
 
     .coming-soon {
-      font-size: 13px;
-      letter-spacing: 0.15em;
+      font-size: 12px;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--muted);
-      animation: fadeUp 0.8s 0.35s ease both;
+      animation: fadeUp 1s 0.35s ease both;
+      margin-bottom: 32px;
     }
 
-    /* ── LEGAL SECTION ── */
-    .legal {
-      padding: 0 24px 80px;
-      max-width: 760px;
+    .pricing-note {
+      font-size: 12px;
+      color: var(--muted);
+      font-style: italic;
+      max-width: 480px;
+      line-height: 1.8;
+      animation: fadeUp 1s 0.45s ease both;
+      border: 1px solid #1a1a1a;
+      padding: 14px 20px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.02);
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      animation: fadeUp 1s 0.6s ease both;
+    }
+
+    .scroll-hint span {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .scroll-arrow {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      animation: scrollPulse 2s infinite;
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.2); }
+    }
+
+    /* ── SECTIONS ── */
+    .section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 120px 0 80px;
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-inner {
+      max-width: 900px;
       margin: 0 auto;
+      padding: 0 40px;
       width: 100%;
     }
 
+    /* Label above title */
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    /* Big title */
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(52px, 9vw, 100px);
+      line-height: 0.95;
+      letter-spacing: 0.03em;
+      color: var(--text);
+      margin-bottom: 24px;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s 0.1s ease, transform 0.7s 0.1s ease;
+    }
+
+    .section-title span { color: var(--accent); }
+
+    /* Slogan */
+    .section-slogan {
+      font-size: clamp(15px, 2.5vw, 20px);
+      font-weight: 300;
+      color: var(--muted2);
+      margin-bottom: 48px;
+      line-height: 1.6;
+      max-width: 600px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s 0.2s ease, transform 0.7s 0.2s ease;
+    }
+
+    /* Long text block — reveals on scroll */
+    .section-body {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s 0.35s ease, transform 0.8s 0.35s ease;
+      border-top: 1px solid var(--border);
+      padding-top: 40px;
+      margin-top: 8px;
+    }
+
+    .section-body p {
+      font-size: 15px;
+      line-height: 1.9;
+      color: #888;
+      margin-bottom: 20px;
+      max-width: 680px;
+    }
+
+    .section-body p strong {
+      color: #bbb;
+      font-weight: 500;
+    }
+
+    .feature-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+      margin-top: 36px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px 18px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: rgba(255,255,255,0.015);
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .feature-item:hover {
+      border-color: #2a2a2a;
+      background: rgba(255,255,255,0.03);
+    }
+
+    .feature-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+      margin-top: 7px;
+    }
+
+    .feature-item span {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #777;
+    }
+
+    /* Visible state */
+    .section.visible .section-label,
+    .section.visible .section-title,
+    .section.visible .section-slogan,
+    .section.visible .section-body {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Section background number */
+    .section-bg-number {
+      position: absolute;
+      right: -20px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(180px, 25vw, 320px);
+      color: rgba(255,255,255,0.018);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+      letter-spacing: -0.02em;
+    }
+
+    /* ── APP SECTION ── */
+    #app-section {
+      min-height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 100px 24px;
+      border-top: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app-glow {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(230,51,41,0.08) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .app-inner {
+      position: relative;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .app-inner.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .app-label {
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .app-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(40px, 7vw, 80px);
+      letter-spacing: 0.04em;
+      margin-bottom: 16px;
+      line-height: 1;
+    }
+
+    .app-sub {
+      font-size: 14px;
+      color: var(--muted2);
+      font-weight: 300;
+      margin-bottom: 40px;
+      letter-spacing: 0.05em;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 16px 36px;
+      border-radius: 4px;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .btn-primary:hover {
+      background: #c9291f;
+      transform: translateY(-2px);
+    }
+
+    .btn-arrow {
+      font-size: 16px;
+      transition: transform 0.2s;
+    }
+
+    .btn-primary:hover .btn-arrow {
+      transform: translateX(4px);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--text); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── ACCORDION ── */
     .accordion {
       border: 1px solid var(--border);
       border-radius: 8px;
       overflow: hidden;
       margin-bottom: 12px;
-      animation: fadeUp 0.8s 0.4s ease both;
-    }
-
-    .accordion + .accordion {
-      animation-delay: 0.5s;
     }
 
     .accordion-header {
@@ -130,9 +478,7 @@
       color: var(--text);
     }
 
-    .accordion-header:hover {
-      background: #161616;
-    }
+    .accordion-header:hover { background: #161616; }
 
     .accordion-title {
       font-size: 15px;
@@ -146,7 +492,6 @@
       height: 20px;
       flex-shrink: 0;
       position: relative;
-      transition: transform 0.3s ease;
     }
 
     .accordion-icon::before,
@@ -158,15 +503,8 @@
       transition: transform 0.3s ease, opacity 0.3s ease;
     }
 
-    .accordion-icon::before {
-      width: 2px; height: 12px;
-      top: 4px; left: 9px;
-    }
-
-    .accordion-icon::after {
-      width: 12px; height: 2px;
-      top: 9px; left: 4px;
-    }
+    .accordion-icon::before { width: 2px; height: 12px; top: 4px; left: 9px; }
+    .accordion-icon::after  { width: 12px; height: 2px; top: 9px; left: 4px; }
 
     .accordion.open .accordion-icon::before {
       transform: rotate(90deg);
@@ -180,9 +518,7 @@
       background: var(--bg);
     }
 
-    .accordion.open .accordion-body {
-      max-height: 9999px;
-    }
+    .accordion.open .accordion-body { max-height: 9999px; }
 
     .accordion-content {
       padding: 32px 24px 40px;
@@ -201,9 +537,7 @@
       border-left: 2px solid var(--accent);
     }
 
-    .accordion-content h2:first-child {
-      margin-top: 0;
-    }
+    .accordion-content h2:first-child { margin-top: 0; }
 
     .accordion-content p {
       font-size: 14px;
@@ -212,9 +546,7 @@
       margin-bottom: 8px;
     }
 
-    .accordion-content ul {
-      margin: 6px 0 10px 20px;
-    }
+    .accordion-content ul { margin: 6px 0 10px 20px; }
 
     .accordion-content ul li {
       font-size: 14px;
@@ -223,10 +555,7 @@
       margin-bottom: 4px;
     }
 
-    .accordion-content a {
-      color: var(--accent);
-      text-decoration: none;
-    }
+    .accordion-content a { color: var(--accent); text-decoration: none; }
 
     .updated {
       font-size: 11px;
@@ -237,165 +566,245 @@
       display: block;
     }
 
-    /* ── FOOTER ── */
-    footer {
-      text-align: center;
-      padding: 24px;
-      border-top: 1px solid var(--border);
-      font-size: 12px;
-      color: var(--muted);
-      letter-spacing: 0.08em;
-    }
-
-    /* ── ANIMATIONS ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      .section-inner { padding: 0 24px; }
+      footer { padding: 24px 20px; flex-direction: column; align-items: flex-start; }
+      .feature-list { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-  <section class="hero">
+  <!-- NAV -->
+  <nav>
+    <a href="#hero" class="nav-logo">C<span>A</span>MP</a>
+    <ul class="nav-links">
+      <li><a href="#vallalkozo">Vállalkozó</a></li>
+      <li><a href="#creator">Creator</a></li>
+      <li><a href="#bongeszo">Böngésző</a></li>
+      <li><a href="#app-section">Az app</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-noise"></div>
     <div class="logo">C<span>A</span>MP</div>
     <p class="tagline">Creator Ad Marketplace Platform</p>
-    <div class="divider"></div>
-    <p class="coming-soon">Coming soon</p>
+    <div class="hero-divider"></div>
+    <p class="coming-soon">Hamarosan elérhető</p>
+    <p class="pricing-note">
+      A CAMP ingyenesen regisztrálható, azonban a teljes funkcionalitás csomagalapú előfizetéssel érhető el. A részletes csomagok hamarosan elérhetők.
+    </p>
+    <div class="scroll-hint">
+      <span>Görgess</span>
+      <div class="scroll-arrow"></div>
+    </div>
   </section>
 
-  <section class="legal">
-
-    <div class="accordion" id="terms">
-      <button class="accordion-header" onclick="toggle(this)">
-        <span class="accordion-title">Terms of Service</span>
-        <span class="accordion-icon"></span>
-      </button>
-      <div class="accordion-body">
-        <div class="accordion-content">
-          <span class="updated">Last updated: February 21, 2026</span>
-
-          <h2>1. Acceptance of Terms</h2>
-          <p>By accessing or using CAMP ("the Service"), you agree to be bound by these Terms of Service. If you do not agree, please do not use the Service.</p>
-
-          <h2>2. Description of Service</h2>
-          <p>CAMP is a social media management platform that allows users to schedule, publish, and manage content across multiple social media platforms including YouTube, TikTok, Facebook, and Instagram.</p>
-
-          <h2>3. User Accounts</h2>
-          <ul>
-            <li>You must provide accurate information when creating an account.</li>
-            <li>You are responsible for maintaining the security of your account.</li>
-            <li>You must be at least 13 years old to use this Service.</li>
-            <li>One person may not maintain more than one account.</li>
-          </ul>
-
-          <h2>4. Acceptable Use</h2>
-          <p>You agree not to use the Service to:</p>
-          <ul>
-            <li>Post illegal, harmful, or offensive content.</li>
-            <li>Violate any third-party platform's terms of service.</li>
-            <li>Spam or send unsolicited messages.</li>
-            <li>Impersonate others or misrepresent your identity.</li>
-            <li>Attempt to gain unauthorized access to our systems.</li>
-          </ul>
-
-          <h2>5. Social Media Platform Compliance</h2>
-          <p>When using CAMP to post content to third-party platforms (YouTube, TikTok, Facebook, Instagram), you agree to comply with each platform's respective terms of service and community guidelines.</p>
-
-          <h2>6. Intellectual Property</h2>
-          <p>You retain ownership of all content you upload to CAMP. By using the Service, you grant CAMP a limited license to store and process your content solely for the purpose of providing the Service.</p>
-
-          <h2>7. Subscription and Payments</h2>
-          <ul>
-            <li>Some features require a paid subscription.</li>
-            <li>Subscriptions are billed monthly or annually.</li>
-            <li>You may cancel your subscription at any time.</li>
-            <li>Refunds are handled on a case-by-case basis.</li>
-          </ul>
-
-          <h2>8. Termination</h2>
-          <p>We reserve the right to suspend or terminate your account if you violate these Terms. You may also delete your account at any time.</p>
-
-          <h2>9. Disclaimer of Warranties</h2>
-          <p>The Service is provided "as is" without warranties of any kind. We do not guarantee uninterrupted or error-free service.</p>
-
-          <h2>10. Limitation of Liability</h2>
-          <p>CAMP shall not be liable for any indirect, incidental, or consequential damages arising from your use of the Service.</p>
-
-          <h2>11. Changes to Terms</h2>
-          <p>We may update these Terms from time to time. Continued use of the Service after changes constitutes acceptance of the new Terms.</p>
-
-          <h2>12. Contact</h2>
-          <p>For questions about these Terms, contact us at: <a href="mailto:camp.app726@gmail.com">camp.app726@gmail.com</a></p>
+  <!-- VÁLLALKOZÓ -->
+  <section class="section" id="vallalkozo">
+    <div class="section-bg-number">01</div>
+    <div class="section-inner">
+      <p class="section-label">Vállalkozóknak</p>
+      <h2 class="section-title">A vállalkozók<br><span>piactere</span></h2>
+      <p class="section-slogan">Hirdesd meg vállalkozásod, és találj tartalomgyártókat, akik megmutatják a világnak — ingyen regisztrálhatsz, és már ma elkezdhetsz növekedni.</p>
+      <div class="section-body">
+        <p>Képzeld el, hogy a vállalkozásod ott van, ahol az emberek keresnek. A CAMP-en a böngészők pont úgy nézik meg a profilodat, mint egy Jófogás hirdetést — megnyitják, megnézik mit csinálsz, hol vagy, mit kínálsz.</p>
+        <p>De ez csak az egyik fele. A másik: megadhatod, milyen tartalmat szeretnél — egy TikTok videót, egy Instagram posztot, egy YouTube bemutatót. A platform tartalomgyártói ajánlatot tesznek, te kiválasztod a legjobbat, és a tartalom elkészül. <strong>Nincs ügynökség, nincs felesleges körök</strong> — csak te, a tartalomgyártó, és az eredmény.</p>
+        <div class="feature-list">
+          <div class="feature-item"><div class="feature-dot"></div><span>Saját vállalkozói profil, amit böngészők ezrei látnak</span></div>
+          <div class="feature-item"><div class="feature-dot"></div><span>Hirdetési lehetőség tartalomgyártóknak</span></div>
+          <div class="feature-item"><div class="feature-dot"></div><span>Közvetlen üzenetváltás és ajánlatkérés</span></div>
+          <div class="feature-item"><div class="feature-dot"></div><span>Értékelések, statisztikák, átlátható együttműködés</span></div>
         </div>
       </div>
     </div>
+  </section>
 
-    <div class="accordion" id="privacy">
-      <button class="accordion-header" onclick="toggle(this)">
-        <span class="accordion-title">Privacy Policy</span>
-        <span class="accordion-icon"></span>
-      </button>
-      <div class="accordion-body">
-        <div class="accordion-content">
-          <span class="updated">Last updated: February 21, 2026</span>
-
-          <h2>Introduction</h2>
-          <p>CAMP ("we", "our", or "us") respects your privacy. This Privacy Policy explains how we collect, use, and protect your information when you use our social media management platform.</p>
-
-          <h2>Information We Collect</h2>
-          <ul>
-            <li><strong style="color:#ccc">Account Information:</strong> When you sign up, we collect your email address and name.</li>
-            <li><strong style="color:#ccc">Social Media Data:</strong> We access your Facebook, Instagram, YouTube, and TikTok accounts only with your explicit permission through OAuth.</li>
-            <li><strong style="color:#ccc">Content:</strong> Posts, images, and videos you create or schedule through our platform.</li>
-          </ul>
-
-          <h2>How We Use Your Information</h2>
-          <ul>
-            <li><strong style="color:#ccc">To provide our service:</strong> Schedule and publish content to your connected social media accounts.</li>
-            <li><strong style="color:#ccc">To improve our platform:</strong> Analyze usage patterns to enhance features.</li>
-            <li><strong style="color:#ccc">Communication:</strong> Send you service updates and support messages.</li>
-          </ul>
-
-          <h2>Data Sharing</h2>
-          <ul>
-            <li>We do <strong style="color:#ccc">NOT</strong> sell your personal information.</li>
-            <li>We only share data with social media platforms when you explicitly authorize us to post content on your behalf.</li>
-            <li>We use secure, encrypted connections for all data transfers.</li>
-          </ul>
-
-          <h2>Your Rights</h2>
-          <ul>
-            <li><strong style="color:#ccc">Access:</strong> You can request a copy of your data at any time.</li>
-            <li><strong style="color:#ccc">Deletion:</strong> You can delete your account and all associated data.</li>
-            <li><strong style="color:#ccc">Revoke Access:</strong> You can disconnect social media accounts at any time.</li>
-          </ul>
-
-          <h2>Data Security</h2>
-          <p>We use industry-standard security measures including encryption, secure servers, and regular security audits to protect your information.</p>
-
-          <h2>Third-Party Services</h2>
-          <p>We integrate with Facebook / Meta, Instagram, YouTube / Google, and TikTok. Each platform has its own privacy policy which governs how they handle your data.</p>
-
-          <h2>Children's Privacy</h2>
-          <p>Our service is not intended for users under 13 years of age. We do not knowingly collect information from children.</p>
-
-          <h2>Changes to This Policy</h2>
-          <p>We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new policy on this page.</p>
-
-          <h2>Data Retention</h2>
-          <p>We retain your data for as long as your account is active. After account deletion, we remove all personal data within 30 days.</p>
-
-          <h2>Contact Us</h2>
-          <p>If you have questions about this Privacy Policy, contact us at: <a href="mailto:camp.app726@gmail.com">camp.app726@gmail.com</a></p>
+  <!-- CREATOR -->
+  <section class="section" id="creator">
+    <div class="section-bg-number">02</div>
+    <div class="section-inner">
+      <p class="section-label">Tartalomgyártóknak</p>
+      <h2 class="section-title">Fordítsd tartalomra<br><span>a tehetséged</span></h2>
+      <p class="section-slogan">Csatlakozz vállalkozásokhoz, vállalj együttműködéseket és kezeld az összes platformod egyetlen felületről.</p>
+      <div class="section-body">
+        <p>A CAMP-en megtalálod azokat a vállalkozásokat, amelyek pontosan olyan tartalomgyártót keresnek, mint te. Böngészd az elérhető megbízásokat, tegyél ajánlatot, és kezdj el dolgozni — minden egy helyen, felesleges adminisztráció nélkül.</p>
+        <p>Nem kell hozzá cég, nem kell tapasztalat. Ha szeretsz fotózni, videózni, vagy csak jól megy a közösségi média — a CAMP-en ez már elég a kezdéshez. De a megbízásokat te szerzed meg: <strong>minél jobb a portfóliód, minél meggyőzőbb az ajánlatod</strong>, annál több vállalkozó választ téged. A CAMP megteremti a lehetőséget — a többit te csinálod.</p>
+        <p>De a CAMP több mint egy piactér. Kezeld az összes közösségi médiafiókod egyetlen felületről, töltsd fel a tartalmaidat, és kövesd nyomon, hogyan teljesítenek. Az AI eszközök segítenek a feliratok, hashtagek és posztötletek megírásában — hogy több időd maradjon alkotni.</p>
+        <div class="feature-list">
+          <div class="feature-item"><div class="feature-dot"></div><span>Elérhető megbízások böngészése és ajánlattétel</span></div>
+          <div class="feature-item"><div class="feature-dot"></div><span>YouTube, TikTok, Instagram és Facebook kezelése egy helyen</span></div>
+          <div class="feature-item"><div class="feature-dot"></div><span>AI-alapú szövegírás és posztgenerátor</span></div>
+          <div class="feature-item"><div class="feature-dot"></div><span>Portfólió oldal és médiacsomag a profilodon</span></div>
+          <div class="feature-item"><div class="feature-dot"></div><span>Statisztikák és bevételkövetés minden platformhoz</span></div>
         </div>
       </div>
     </div>
-
   </section>
 
-  <footer>© 2026 CAMP. All rights reserved.</footer>
+  <!-- BÖNGÉSZŐ -->
+  <section class="section" id="bongeszo">
+    <div class="section-bg-number">03</div>
+    <div class="section-inner">
+      <p class="section-label">Böngészőknek</p>
+      <h2 class="section-title">Keress<br><span>és találj!</span></h2>
+      <p class="section-slogan">Fedezd fel a környékeden lévő vállalkozókat, nézd meg mit kínálnak — és ha tetszik, lépj velük kapcsolatba.</p>
+      <div class="section-body">
+        <p>Volt már, hogy kerestél egy villanyszerelőt, fodrászt, vagy bármilyen helyi vállalkozást — de az egyetlen amit találtál egy telefonszám volt, meg egy Google térkép pin? Nem tudtad, mivel foglalkoznak pontosan, mások hogy értékelték őket, vagy egyáltalán aktívak-e még. Végül hívtál valakit vakon, vagy feladtad.</p>
+        <p>A CAMP-en ez másképp működik. Minden vállalkozónak saját profilja van: látod mivel foglalkoznak, milyen tartalmakat készíttetnek, és mások hogyan értékelték őket. <strong>Szűrj iparág és helyszín szerint</strong>, mentsd el a kedvenceidet, és csak akkor vedd fel a kapcsolatot, ha már biztos vagy benne.</p>
+        <div class="feature-list">
+          <div class="feature-item"><div class="feature-dot"></div><span>Részletes vállalkozói profilok és értékelések</span></div>
+          <div class="feature-item"><div class="feature-dot"></div><span>Keresés helyszín és iparág szerint</span></div>
+          <div class="feature-item"><div class="feature-dot"></div><span>Kedvencek mentése</span></div>
+          <div class="feature-item"><div class="feature-dot"></div><span>Közvetlen kapcsolatfelvétel felesleges telefonálás nélkül</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- APP SECTION -->
+  <section id="app-section">
+    <div class="app-glow"></div>
+    <div class="app-inner" id="app-inner">
+      <p class="app-label">Már elérhető</p>
+      <h2 class="app-title">Próbáld ki a CAMP-et</h2>
+      <p class="app-sub">Regisztrálj ingyen és fedezd fel a platformot.</p>
+      <a href="https://app-camp.hu" target="_blank" class="btn-primary">
+        Megnyitom az appot
+        <span class="btn-arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- LEGAL -->
+  <section style="padding: 80px 0; border-top: 1px solid var(--border);">
+    <div style="max-width: 760px; margin: 0 auto; padding: 0 40px;">
+
+      <p style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); margin-bottom: 32px;">Jogi információk</p>
+
+      <div class="accordion" id="terms">
+        <button class="accordion-header" onclick="toggle(this)">
+          <span class="accordion-title">Terms of Service</span>
+          <span class="accordion-icon"></span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-content">
+            <span class="updated">Last updated: February 21, 2026</span>
+            <h2>1. Acceptance of Terms</h2>
+            <p>By accessing or using CAMP ("the Service"), you agree to be bound by these Terms of Service. If you do not agree, please do not use the Service.</p>
+            <h2>2. Description of Service</h2>
+            <p>CAMP is a social media management platform that allows users to schedule, publish, and manage content across multiple social media platforms including YouTube, TikTok, Facebook, and Instagram.</p>
+            <h2>3. User Accounts</h2>
+            <ul>
+              <li>You must provide accurate information when creating an account.</li>
+              <li>You are responsible for maintaining the security of your account.</li>
+              <li>You must be at least 13 years old to use this Service.</li>
+              <li>One person may not maintain more than one account.</li>
+            </ul>
+            <h2>4. Acceptable Use</h2>
+            <p>You agree not to use the Service to:</p>
+            <ul>
+              <li>Post illegal, harmful, or offensive content.</li>
+              <li>Violate any third-party platform's terms of service.</li>
+              <li>Spam or send unsolicited messages.</li>
+              <li>Impersonate others or misrepresent your identity.</li>
+              <li>Attempt to gain unauthorized access to our systems.</li>
+            </ul>
+            <h2>5. Social Media Platform Compliance</h2>
+            <p>When using CAMP to post content to third-party platforms (YouTube, TikTok, Facebook, Instagram), you agree to comply with each platform's respective terms of service and community guidelines.</p>
+            <h2>6. Intellectual Property</h2>
+            <p>You retain ownership of all content you upload to CAMP. By using the Service, you grant CAMP a limited license to store and process your content solely for the purpose of providing the Service.</p>
+            <h2>7. Subscription and Payments</h2>
+            <ul>
+              <li>Some features require a paid subscription.</li>
+              <li>Subscriptions are billed monthly or annually.</li>
+              <li>You may cancel your subscription at any time.</li>
+              <li>Refunds are handled on a case-by-case basis.</li>
+            </ul>
+            <h2>8. Termination</h2>
+            <p>We reserve the right to suspend or terminate your account if you violate these Terms. You may also delete your account at any time.</p>
+            <h2>9. Disclaimer of Warranties</h2>
+            <p>The Service is provided "as is" without warranties of any kind. We do not guarantee uninterrupted or error-free service.</p>
+            <h2>10. Limitation of Liability</h2>
+            <p>CAMP shall not be liable for any indirect, incidental, or consequential damages arising from your use of the Service.</p>
+            <h2>11. Changes to Terms</h2>
+            <p>We may update these Terms from time to time. Continued use of the Service after changes constitutes acceptance of the new Terms.</p>
+            <h2>12. Contact</h2>
+            <p>For questions about these Terms, contact us at: <a href="mailto:camp.app726@gmail.com">camp.app726@gmail.com</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion" id="privacy">
+        <button class="accordion-header" onclick="toggle(this)">
+          <span class="accordion-title">Privacy Policy</span>
+          <span class="accordion-icon"></span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-content">
+            <span class="updated">Last updated: February 21, 2026</span>
+            <h2>Introduction</h2>
+            <p>CAMP ("we", "our", or "us") respects your privacy. This Privacy Policy explains how we collect, use, and protect your information when you use our social media management platform.</p>
+            <h2>Information We Collect</h2>
+            <ul>
+              <li><strong style="color:#ccc">Account Information:</strong> When you sign up, we collect your email address and name.</li>
+              <li><strong style="color:#ccc">Social Media Data:</strong> We access your Facebook, Instagram, YouTube, and TikTok accounts only with your explicit permission through OAuth.</li>
+              <li><strong style="color:#ccc">Content:</strong> Posts, images, and videos you create or schedule through our platform.</li>
+            </ul>
+            <h2>How We Use Your Information</h2>
+            <ul>
+              <li><strong style="color:#ccc">To provide our service:</strong> Schedule and publish content to your connected social media accounts.</li>
+              <li><strong style="color:#ccc">To improve our platform:</strong> Analyze usage patterns to enhance features.</li>
+              <li><strong style="color:#ccc">Communication:</strong> Send you service updates and support messages.</li>
+            </ul>
+            <h2>Data Sharing</h2>
+            <ul>
+              <li>We do <strong style="color:#ccc">NOT</strong> sell your personal information.</li>
+              <li>We only share data with social media platforms when you explicitly authorize us to post content on your behalf.</li>
+              <li>We use secure, encrypted connections for all data transfers.</li>
+            </ul>
+            <h2>Your Rights</h2>
+            <ul>
+              <li><strong style="color:#ccc">Access:</strong> You can request a copy of your data at any time.</li>
+              <li><strong style="color:#ccc">Deletion:</strong> You can delete your account and all associated data.</li>
+              <li><strong style="color:#ccc">Revoke Access:</strong> You can disconnect social media accounts at any time.</li>
+            </ul>
+            <h2>Data Security</h2>
+            <p>We use industry-standard security measures including encryption, secure servers, and regular security audits to protect your information.</p>
+            <h2>Third-Party Services</h2>
+            <p>We integrate with Facebook / Meta, Instagram, YouTube / Google, and TikTok. Each platform has its own privacy policy which governs how they handle your data.</p>
+            <h2>Children's Privacy</h2>
+            <p>Our service is not intended for users under 13 years of age. We do not knowingly collect information from children.</p>
+            <h2>Changes to This Policy</h2>
+            <p>We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new policy on this page.</p>
+            <h2>Data Retention</h2>
+            <p>We retain your data for as long as your account is active. After account deletion, we remove all personal data within 30 days.</p>
+            <h2>Contact Us</h2>
+            <p>If you have questions about this Privacy Policy, contact us at: <a href="mailto:camp.app726@gmail.com">camp.app726@gmail.com</a></p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-copy">© 2026 CAMP. Minden jog fenntartva.</span>
+    <div class="footer-links">
+      <a href="#terms">Felhasználási feltételek</a>
+      <a href="#privacy">Adatvédelmi nyilatkozat</a>
+    </div>
+  </footer>
 
   <script>
+    // Accordion toggle
     function toggle(btn) {
       const acc = btn.closest('.accordion');
       acc.classList.toggle('open');
@@ -412,6 +821,31 @@
         }
       }
     });
+
+    // Scroll reveal
+    const sections = document.querySelectorAll('.section');
+    const appInner = document.getElementById('app-inner');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    sections.forEach(s => observer.observe(s));
+
+    // App section observer
+    const appObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.3 });
+
+    appObserver.observe(appInner);
   </script>
 
 </body>
